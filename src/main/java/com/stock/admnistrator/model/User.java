@@ -42,4 +42,7 @@ public class User {
 	
 	@Column(name = "inclusion_date")
 	private OffsetDateTime inclusionDate;
+	
+	@Column(name = "active")
+	private Boolean active;
 }

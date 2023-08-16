@@ -42,4 +42,45 @@ public class UserService {
 		
 		return user;
 	}
+	
+	public User setUserInactive(Long userId) {
+		User user = new User();
+		user = userRepository.getUserById(userId);
+		
+		user.setActive(false);
+		
+		userRepository.save(user);
+		
+		return user;
+	}
+	
+	public User updateUser(UserDTO dto) {
+		User user = new User();
+		
+		user = userRepository.getUserById(dto.getId());
+		
+		if(dto.getName() != null) {
+			user.setName(dto.getName().toUpperCase());
+		}
+		
+		if(dto.getEmail() != null) {
+			user.setEmail(dto.getEmail());
+		}
+		
+		if(dto.getCpf() != null) {
+			user.setCpf(dto.getCpf());
+		}
+		
+		if(dto.getBirthday() != null) {
+			String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+			LocalDateTime birthday = LocalDateTime.parse(dto.getBirthday(), formatter);
+			user.setBirthday(birthday);
+		}
+		
+
+		userRepository.save(user);
+		
+		return user;
+	}
 }
