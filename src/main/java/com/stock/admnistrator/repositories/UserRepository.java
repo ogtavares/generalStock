@@ -19,4 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value= "select * from tb_user tu"
 			+ " where tu.active = true",nativeQuery= true)
 	public List<User> listActiveUsers();
+	
+	@Query(value= "select * from tb_user tu"
+			+ " where tu.cpf = :cpf and tu.active = true",nativeQuery= true)
+	public User getUserByCpf(@Param("cpf") String cpf);
+	
+	@Query(value= "select * from tb_user tu"
+			+ " where tu.email = :email and tu.active = true",nativeQuery= true)
+	public User getUserByEmail(@Param("email") String email);
 }
