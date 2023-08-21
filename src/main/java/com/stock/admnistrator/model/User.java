@@ -33,6 +33,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails{
+	private static final long serialVersionUID = -6426326487603124042L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -89,6 +91,6 @@ public class User implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return active;
 	}
 }

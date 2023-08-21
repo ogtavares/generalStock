@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public UserDTO getById(Long userId) {
+	public UserDTO getById(final Long userId) {
 		try {
 			User user = new User();
 			UserDTO userDto = new UserDTO();
@@ -34,6 +35,27 @@ public class UserService {
 					.inclusionDate(user.getInclusionDate()).build();
 			
 			return userDto;
+		}catch(Exception e){
+			 throw new StockException(" Error retrieving user please contact support", e);
+		}
+
+	}
+	
+	public User getByUsername(final String userEmail) {
+		try {
+			User user = new User();
+//			UserDTO userDto = new UserDTO();
+
+			user = userRepository.getUserByEmail(userEmail);
+			
+			if(user == null) {
+				throw new UsernameNotFoundException(String.format("User %s not found", userEmail));
+			}
+
+//			userDto = UserDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail()).cpf(user.getCpf()).birthday(user.getBirthday().toString())
+//					.inclusionDate(user.getInclusionDate()).build();
+			
+			return user;
 		}catch(Exception e){
 			 throw new StockException(" Error retrieving user please contact support", e);
 		}
@@ -62,7 +84,7 @@ public class UserService {
 
 	}
 	
-	public User saveUser(UserDTO dto) {
+	public User saveUser(final UserDTO dto) {
 		try {
 			User existedCpfUser = userRepository.getUserByCpf(dto.getCpf());
 			User existedEmailUser = userRepository.getUserByEmail(dto.getEmail());
@@ -90,7 +112,7 @@ public class UserService {
 
 	}
 	
-	public User setUserInactive(Long userId) {
+	public User setUserInactive(final Long userId) {
 		try {
 	        User user = userRepository.getUserById(userId);
 
@@ -107,7 +129,7 @@ public class UserService {
 	    
 	}
 	
-	public User updateUser(UserDTO dto) {
+	public User updateUser(final UserDTO dto) {
 		try {
 			User user = new User();
 			
